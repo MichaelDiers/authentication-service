@@ -9,6 +9,9 @@ class SignInRequestSchema(Schema):
     '''
         Describes the schema of a sign in request thats extends Schema.
     '''
+
+    __model__ = SignInRequest
+
     class Meta:
         '''
             Defines the metadata of the schema.
@@ -29,4 +32,4 @@ class SignInRequestSchema(Schema):
         '''
             Transform the data to a SignInRequest
         '''
-        return SignInRequest(**data)
+        return self.__model__(**data)

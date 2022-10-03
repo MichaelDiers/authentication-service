@@ -116,3 +116,12 @@ def test_for_additional_parameter_rejection():
     errors = SignInRequestSchema().validate(payload)
     assert 'foo' in errors
     assert 'Unknown field.' in errors['foo']
+
+
+def test_post_load() -> None:
+    '''Test for post_load.'''
+    payload = create_payload(VALID_EMAIL, VALID_PASSWORD)
+    sign_in_request = SignInRequestSchema().load(payload)
+    assert sign_in_request is not None
+    assert sign_in_request.email == VALID_EMAIL
+    assert sign_in_request.password == VALID_PASSWORD

@@ -16,7 +16,7 @@ class AuthService:
             Create a new instance of AuthService.
 
             Args:
-                jwt_service (JwtService, optional): Service for creating json web tokens. 
+                jwt_service (JwtService, optional): Service for creating json web tokens.
                     Defaults to JwtService().
         '''
         self.jwt_service = jwt_service

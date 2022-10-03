@@ -13,3 +13,15 @@ def test_init():
     response = TokenResponse(token)
 
     assert token == response.token
+
+
+def test_to_dict():
+    '''
+        Test for to_dict.
+    '''
+    token = 'token'
+    token_response = TokenResponse(token)
+    dictionary = token_response.to_dict()
+    assert dictionary is not None
+    assert len(dictionary) == 1
+    assert dictionary['token'] == token

@@ -2,6 +2,8 @@
     Describes a request for signing in.
 '''
 
+# pylint: disable=too-few-public-methods
+
 
 class SignInRequest:
     '''
@@ -18,3 +20,12 @@ class SignInRequest:
         '''
         self.email = email
         self.password = password
+
+    def __str__(self):
+        '''
+            Create a string representation of the object.
+
+            Returns:
+                str: The string representation.
+        '''
+        return f'{SignInRequest.__name__}: (email: {self.email}, password: {self.password})'

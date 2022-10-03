@@ -17,6 +17,15 @@ class TokenResponse:
         '''
         self.token = token
 
+    def __str__(self):
+        '''
+            Create a string representation of the object.
+
+            Returns:
+                str: The string representation.
+        '''
+        return f'{TokenResponse.__name__}: (token: {self.token})'
+
     def to_dict(self) -> dict:
         '''
             Generate a dictionary from all fields.

@@ -25,3 +25,12 @@ def test_to_dict():
     assert dictionary is not None
     assert len(dictionary) == 1
     assert dictionary['token'] == token
+
+
+def test_str():
+    '''
+        Test for __str__.
+    '''
+    response = TokenResponse('tok.e.n')
+    expected = 'TokenResponse: (token: tok.e.n)'
+    assert expected == str(response)

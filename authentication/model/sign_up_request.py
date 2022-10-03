@@ -4,6 +4,8 @@
 
 from authentication.model.sign_in_request import SignInRequest
 
+# pylint: disable=too-few-public-methods
+
 
 class SignUpRequest(SignInRequest):
     '''
@@ -21,3 +23,15 @@ class SignUpRequest(SignInRequest):
         '''
         super().__init__(email, password)
         self.display_name = display_name
+
+    def __str__(self):
+        '''
+            Create a string representation of the object.
+
+            Returns:
+                str: The string representation.
+        '''
+        data = super().__str__()
+        data = data[:-1].replace(SignInRequest.__name__,
+                                 SignUpRequest.__name__)
+        return f'{data}, display_name: {self.display_name})'

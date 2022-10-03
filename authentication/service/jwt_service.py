@@ -4,6 +4,8 @@
 import jwt
 from authentication.model.token_response import TokenResponse
 
+# pylint: disable=too-few-public-methods
+
 
 class JwtService:
     '''

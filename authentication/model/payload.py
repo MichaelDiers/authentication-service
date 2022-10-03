@@ -17,6 +17,17 @@ class Payload:
         '''
         self.display_name = display_name
 
+    def __str__(self):
+        '''
+            Create a string representation of the object.
+
+            Returns:
+                str: The string representation.
+        '''
+        data = ', '.join(f'{key}: {value}' for (
+            key, value) in self.to_dict().items())
+        return f'{Payload.__name__}: ({data})'
+
     def to_dict(self) -> dict:
         '''
             Generate a dictionary from all fields.

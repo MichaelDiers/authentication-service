@@ -4,6 +4,8 @@
 from marshmallow import fields, post_load, RAISE, Schema, validate
 from authentication.model.sign_in_request import SignInRequest
 
+# pylint: disable=too-few-public-methods
+
 
 class SignInRequestSchema(Schema):
     '''

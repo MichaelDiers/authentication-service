@@ -25,3 +25,12 @@ def test_to_dict():
     dictionary = payload.to_dict()
     assert display_name == dictionary[expected_key]
     assert len(dictionary) == 1
+
+
+def test_str():
+    '''
+        Test for __str__.
+    '''
+    payload = Payload('display name')
+    expected = 'Payload: (displayName: display name)'
+    assert expected == str(payload)

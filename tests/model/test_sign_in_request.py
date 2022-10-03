@@ -15,3 +15,12 @@ def test_init():
 
     assert email == request.email
     assert password == request.password
+
+
+def test_str():
+    '''
+        Test for __str__.
+    '''
+    request = SignInRequest('email@example.com', 'my password')
+    expected = 'SignInRequest: (email: email@example.com, password: my password)'
+    assert expected == str(request)

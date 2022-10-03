@@ -4,6 +4,7 @@
 from authentication.model.payload import Payload
 from authentication.model.token_response import TokenResponse
 from authentication.service.jwt_service import JwtService
+from authentication.service.user_service import UserService
 
 
 class AuthService:
@@ -11,15 +12,17 @@ class AuthService:
         Service for authenticating users.
     '''
 
-    def __init__(self, jwt_service=JwtService()) -> None:
+    def __init__(self, user_service=UserService(), jwt_service=JwtService()) -> None:
         '''
             Create a new instance of AuthService.
 
             Args:
+                user_service: Service for reading and creating users.
                 jwt_service (JwtService, optional): Service for creating json web tokens.
                     Defaults to JwtService().
         '''
         self.jwt_service = jwt_service
+        self.user_service = user_service
 
     def sign_in(self, sign_in_request) -> TokenResponse:
         '''
@@ -35,8 +38,11 @@ class AuthService:
                   None, 404: Unknown combination of user/email.
                   None, 500: Internal server error.
         '''
-        display_name = 'display name'
-        token_response = self.jwt_service.encode(Payload(display_name))
+        user, status = self.user_service.read(sign_in_request.email)
+        if not user:
+            return None, status
+
+        token_response = self.jwt_service.encode(Payload(user.display_name))
         return token_response, 200
 
     def sign_up(self, sign_up_request):
@@ -53,6 +59,9 @@ class AuthService:
                   None, 409: User already exists.
                   None, 500: Internal server error.
         '''
-        display_name = sign_up_request.display_name
-        token_response = self.jwt_service.encode(Payload(display_name))
+        user, status = self.user_service.create(sign_up_request)
+        if not user:
+            return None, status
+
+        token_response = self.jwt_service.encode(Payload(user.display_name))
         return token_response, 201

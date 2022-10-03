@@ -18,5 +18,5 @@ def sign_up():
     '''
     sign_up_request = SignUpRequestSchema().load(request.get_json())
     token_response, status = AuthService().sign_up(sign_up_request)
-    json = jsonify(token_response.to_dict())
+    json = jsonify(token_response.to_dict() if token_response else {})
     return json, status

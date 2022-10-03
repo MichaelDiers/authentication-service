@@ -3,7 +3,7 @@
 '''
 
 
-class SignInRequest(object):
+class SignInRequest:
     '''
         Describes a request for signing in.
     '''

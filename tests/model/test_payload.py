@@ -13,3 +13,15 @@ def test_init():
     payload = Payload(display_name)
 
     assert display_name == payload.display_name
+
+
+def test_to_dict():
+    '''
+        Test for creating a dictionary from the payload data.
+    '''
+    display_name = 'my display name'
+    expected_key = 'displayName'
+    payload = Payload(display_name)
+    dictionary = payload.to_dict()
+    assert display_name == dictionary[expected_key]
+    assert len(dictionary) == 1

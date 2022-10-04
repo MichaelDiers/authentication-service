@@ -35,3 +35,14 @@ class SignUpRequest(SignInRequest):
         data = data[:-1].replace(SignInRequest.__name__,
                                  SignUpRequest.__name__)
         return f'{data}, display_name: {self.display_name})'
+
+    def to_dict(self) -> dict:
+        '''
+            Generate a dictionary from all fields.
+
+            Returns:
+                dict: A dictionary containing all fields.
+        '''
+        data = super().to_dict()
+        data['displayName'] = self.display_name
+        return data

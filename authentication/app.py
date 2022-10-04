@@ -28,7 +28,11 @@ def create_app() -> Flask:
             Returns:
                 str, int: An empty response and a status code.
         '''
-        return '', 400
+        return {}, 400
+
+    @app.errorhandler(Exception)
+    def handle_all_errors(_):
+        return {}, 500
 
     app.register_blueprint(sign_in_route)
     app.register_blueprint(sign_up_route)

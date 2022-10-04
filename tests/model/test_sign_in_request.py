@@ -24,3 +24,16 @@ def test_str():
     request = SignInRequest('email@example.com', 'my password')
     expected = 'SignInRequest: (email: email@example.com, password: my password)'
     assert expected == str(request)
+
+
+def test_to_dict():
+    '''
+        Test for to_dict.
+    '''
+    email = 'email@example.com'
+    password = 'my password'
+    request = SignInRequest(email, password)
+    dictionary = request.to_dict()
+    assert len(dictionary) == 2
+    assert dictionary['email'] == email
+    assert dictionary['password'] == password

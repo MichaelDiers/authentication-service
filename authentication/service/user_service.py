@@ -1,8 +1,8 @@
 '''
     Access to the user rest service.
 '''
-
 from typing import Tuple
+import requests
 from authentication.model.user import User
 
 
@@ -11,7 +11,7 @@ class UserService:
         Access to the user rest service.
     '''
 
-    def __init__(self, url='url'):
+    def __init__(self, url=None):
         '''
             Create a new instance of UserService.
 
@@ -30,7 +30,23 @@ class UserService:
             Returns:
                 User, int: The created user or None and the http status code.
         '''
-        return User(sign_up_request.display_name), 201
+        response = requests.post(
+            f'{self.url}',
+            sign_up_request.to_dict(),
+            timeout=20
+        )
+        if response.status_code != 201:
+            return None, response.status_code
+        json = response.json()
+
+        if 'displayName' in json and 'guid' in json:
+            user = User(
+                json['displayName'],
+                json['guid']
+            )
+            return user, 201
+
+        return None, 404
 
     def read(self, email) -> Tuple[User, int]:
         '''
@@ -42,4 +58,19 @@ class UserService:
             Returns:
                 User, int: The found user or None and the http status code.
         '''
-        return User(email), 200
+        response = requests.get(
+            f'{self.url}/email/{email}',
+            timeout=20
+        )
+        if response.status_code != 200:
+            return None, response.status_code
+        json = response.json()
+
+        if 'displayName' in json and 'guid' in json:
+            user = User(
+                json['displayName'],
+                json['guid']
+            )
+            return user, 200
+
+        return None, 404

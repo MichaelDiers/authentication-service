@@ -77,7 +77,7 @@ def test_sign_in(client_sign_in) -> None:  # pylint: disable=redefined-outer-nam
         'email@example.com',
         'my password').to_dict()
 
-    with patch('requests.get') as mock:
+    with patch('requests.post') as mock:
         mock.return_value = Mock(
             status_code=status_code_mock,
             json=json

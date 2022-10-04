@@ -35,7 +35,7 @@ class AuthService:
                   None, 404: Unknown combination of user/email.
                   None, 500: Internal server error.
         '''
-        user, status = self.user_service.read(sign_in_request.email)
+        user, status = self.user_service.read(sign_in_request)
         if not user:
             return None, status
 

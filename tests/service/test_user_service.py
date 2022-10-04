@@ -94,7 +94,7 @@ def test_read(status_code_mock, status_code_service, json) -> None:
         'my password'
     )
 
-    with patch('requests.get') as mock:
+    with patch('requests.post') as mock:
         mock.return_value = Mock(
             status_code=status_code_mock,
             json=json

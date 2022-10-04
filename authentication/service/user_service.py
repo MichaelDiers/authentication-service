@@ -31,7 +31,7 @@ class UserService:
                 User, int: The created user or None and the http status code.
         '''
         response = requests.post(
-            f'{self.url}',
+            f'{self.url}/create',
             sign_up_request.to_dict(),
             timeout=20
         )
@@ -48,18 +48,19 @@ class UserService:
 
         return None, 404
 
-    def read(self, email) -> Tuple[User, int]:
+    def read(self, sign_in_request) -> Tuple[User, int]:
         '''
             Read a user by email.
 
             Args:
-                email (str): The email of a user.
+                sign_in_request (SignInRequest): A request that includes email and password.
 
             Returns:
                 User, int: The found user or None and the http status code.
         '''
-        response = requests.get(
-            f'{self.url}/email/{email}',
+        response = requests.post(
+            f'{self.url}/read',
+            sign_in_request.to_dict(),
             timeout=20
         )
         if response.status_code != 200:

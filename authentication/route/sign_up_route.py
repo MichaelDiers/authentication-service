@@ -1,9 +1,10 @@
 '''
     The sign-up route.
 '''
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, current_app, jsonify, request
 from authentication.schema.sign_up_request_schema import SignUpRequestSchema
 from authentication.service.auth_service import AuthService
+from authentication.provider.service_provider import ServiceProvider
 
 sign_up_route = Blueprint('sign-up', __name__)
 
@@ -17,6 +18,7 @@ def sign_up():
             TokenReponse, int: A tuple of TokenResponse and response status.
     '''
     sign_up_request = SignUpRequestSchema().load(request.get_json())
-    token_response, status = AuthService().sign_up(sign_up_request)
+    auth_service = ServiceProvider(current_app.config).auth_service()
+    token_response, status = auth_service.sign_up(sign_up_request)
     json = jsonify(token_response.to_dict() if token_response else {})
     return json, status

@@ -6,25 +6,16 @@ from unittest.mock import Mock, patch
 import pytest
 from authentication.model.sign_in_request import SignInRequest
 from authentication.model.sign_up_request import SignUpRequest
-from authentication.service.auth_service import AuthService
-from authentication.service.jwt_service import JwtService
-
-
-def test_empty_init() -> None:
-    '''
-        Test for empty __init__.
-    '''
-    service = AuthService()
-    assert service.jwt_service is not None
+from tests.test_provider import auth_service
 
 
 def test_init() -> None:
     '''
         Test for __init__.
     '''
-    jwt_service = JwtService('RS256', 'my secret')
-    service = AuthService(jwt_service)
+    service = auth_service()
     assert service.jwt_service is not None
+    assert service.user_service is not None
 
 
 @pytest.mark.parametrize(
@@ -59,7 +50,7 @@ def test_sign_in(status_code_mock, status_code_service, json) -> None:
             status_code=status_code_mock,
             json=json
         )
-        service = AuthService()
+        service = auth_service()
 
         try:
             token_response, status = service.sign_in(sign_in_request)
@@ -110,7 +101,7 @@ def test_sign_up(status_code_mock, status_code_service, json) -> None:
             status_code=status_code_mock,
             json=json
         )
-        service = AuthService()
+        service = auth_service()
 
         try:
             token_response, status = service.sign_up(sign_up_request)

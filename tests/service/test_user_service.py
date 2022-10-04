@@ -3,9 +3,10 @@
 '''
 from unittest.mock import Mock, patch
 import pytest
-from authentication.service.user_service import UserService
 from authentication.model.sign_in_request import SignInRequest
 from authentication.model.sign_up_request import SignUpRequest
+from tests.test_provider import user_service
+from tests.test_config import TestConfig
 
 
 @pytest.mark.parametrize(
@@ -41,7 +42,7 @@ def test_create(status_code_mock, status_code_service, json) -> None:
             status_code=status_code_mock,
             json=json
         )
-        service = UserService('url')
+        service = user_service()
 
         try:
             user, status = service.create(sign_up_request)
@@ -62,8 +63,8 @@ def test_init() -> None:
     '''
         Test for __init__.
     '''
-    service = UserService('url')
-    assert service.url == 'url'
+    service = user_service()
+    assert service.url == TestConfig.USER_SERVICE_URL
 
 
 @pytest.mark.parametrize(
@@ -98,7 +99,7 @@ def test_read(status_code_mock, status_code_service, json) -> None:
             status_code=status_code_mock,
             json=json
         )
-        service = UserService('url')
+        service = user_service()
 
         try:
             user, status = service.read(sign_in_request)

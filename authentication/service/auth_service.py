@@ -3,8 +3,6 @@
 '''
 from authentication.model.payload import Payload
 from authentication.model.token_response import TokenResponse
-from authentication.service.jwt_service import JwtService
-from authentication.service.user_service import UserService
 
 
 class AuthService:
@@ -12,14 +10,13 @@ class AuthService:
         Service for authenticating users.
     '''
 
-    def __init__(self, user_service=UserService(), jwt_service=JwtService()) -> None:
+    def __init__(self, user_service, jwt_service) -> None:
         '''
             Create a new instance of AuthService.
 
             Args:
                 user_service: Service for reading and creating users.
-                jwt_service (JwtService, optional): Service for creating json web tokens.
-                    Defaults to JwtService().
+                jwt_service (JwtService): Service for creating json web tokens.
         '''
         self.jwt_service = jwt_service
         self.user_service = user_service

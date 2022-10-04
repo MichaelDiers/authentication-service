@@ -12,13 +12,13 @@ class JwtService:
         Service for creating json web tokens.
     '''
 
-    def __init__(self, algorithm='HS256', secret='secret') -> None:
+    def __init__(self, algorithm, secret) -> None:
         '''
             Create a new JwtService.
 
             Args:
-                algorithm (str, optional): The algorithm used for jwt creation. Defaults to 'HS256'.
-                secret (str, optional): The secret used for jwt creation. Defaults to 'secret'.
+                algorithm (str): The algorithm used for jwt creation.
+                secret (str): The secret used for jwt creation.
         '''
         self.algorithm = algorithm
         self.secret = secret

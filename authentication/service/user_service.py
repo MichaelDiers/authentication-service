@@ -11,7 +11,7 @@ class UserService:
         Access to the user rest service.
     '''
 
-    def __init__(self, url=None):
+    def __init__(self, url):
         '''
             Create a new instance of UserService.
 

@@ -3,6 +3,7 @@
 '''
 import pytest
 from authentication.app import create_app
+from tests.test_config import TestConfig
 
 
 @pytest.fixture()
@@ -13,10 +14,7 @@ def app():
         Yields:
             Flask: A flask app.
     '''
-    application = create_app()
-    application.config.update({
-        "TESTING": True,
-    })
+    application = create_app(TestConfig())
 
     # other setup can go here
 

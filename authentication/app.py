@@ -5,9 +5,10 @@ from flask import Flask
 from marshmallow import exceptions
 from authentication.route.sign_in_route import sign_in_route
 from authentication.route.sign_up_route import sign_up_route
+from authentication.config.production_config import ProductionConfig
 
 
-def create_app() -> Flask:
+def create_app(config=None) -> Flask:
     '''
         A fask application factory.
 
@@ -16,6 +17,10 @@ def create_app() -> Flask:
     '''
 
     app = Flask(__name__)
+    if config:
+        app.config.from_object(config)
+    else:
+        app.config.from_object(ProductionConfig())
 
     @app.errorhandler(exceptions.ValidationError)
     def handle_validation_error(_):

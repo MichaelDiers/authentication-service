@@ -15,4 +15,4 @@ jobs:
       - name: run tests
         run: pytest --cov-report term-missing --cov=authentication
       - name: run lint
-        run: pylint authentication tests
+        run: python lint.py

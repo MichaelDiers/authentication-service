@@ -14,3 +14,4 @@ pylint.sh
 pytest.sh
 README.md
 run-dev.sh
+lint.py

@@ -6,6 +6,7 @@ from marshmallow import exceptions
 from authentication.route.sign_in_route import sign_in_route
 from authentication.route.sign_up_route import sign_up_route
 from authentication.config.production_config import ProductionConfig
+from authentication.config.local_config import LocalConfig
 
 
 def create_app(config=None) -> Flask:
@@ -20,7 +21,11 @@ def create_app(config=None) -> Flask:
     if config:
         app.config.from_object(config)
     else:
-        app.config.from_object(ProductionConfig())
+        prod_config = ProductionConfig()
+        if prod_config.API_KEY is not None:
+            app.config.from_object(prod_config)
+        else:
+            app.config.from_object(LocalConfig())
 
     @app.errorhandler(exceptions.ValidationError)
     def handle_validation_error(_):
@@ -34,6 +39,10 @@ def create_app(config=None) -> Flask:
                 str, int: An empty response and a status code.
         '''
         return {}, 400
+
+    @app.errorhandler(404)
+    def handle_not_found(_):
+        return {}, 404
 
     @app.errorhandler(Exception)
     def handle_all_errors(_):

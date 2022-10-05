@@ -149,3 +149,11 @@ def test_sign_up(client_sign_up) -> None:  # pylint: disable=redefined-outer-nam
             assert len(token.split('.')) == 3
         else:
             assert len(response.json) == 0
+
+
+def test_not_found(client):
+    '''
+        Test for 404.
+    '''
+    response = client.post('/sign-up/foo')
+    assert response.status_code == 404

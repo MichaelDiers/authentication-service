@@ -11,6 +11,7 @@ class TestConfig(Config):
     '''
         The app configuration for testing.
     '''
+    API_KEY = 'API_KEY_TEST'
     JWT_ALGORITHM = 'HS256'
     JWT_SECRET = 'test secret'
     TESTING = True

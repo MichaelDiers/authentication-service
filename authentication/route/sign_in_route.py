@@ -5,11 +5,13 @@ from flask import Blueprint, current_app, jsonify, request
 from authentication.schema.sign_in_request_schema import SignInRequestSchema
 from authentication.service.auth_service import AuthService
 from authentication.provider.service_provider import ServiceProvider
+from authentication.decorator.api_key import api_key
 
 sign_in_route = Blueprint('sign-in', __name__)
 
 
 @sign_in_route.route("/sign-in", methods=['POST'])
+@api_key
 def sign_in():
     '''
         Sign in the given user.

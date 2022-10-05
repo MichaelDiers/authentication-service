@@ -9,6 +9,7 @@ class Config:
     '''
         The base configuration of the application.
     '''
+    API_KEY = None
     JWT_ALGORITHM = None
     JWT_SECRET = None
     TESTING = True

@@ -11,6 +11,7 @@ class ProductionConfig(Config):
     '''
         The base configuration of the application.
     '''
+    API_KEY = 'API_KEY_PRODUCTION'
     JWT_ALGORITHM = 'HS256'
     JWT_SECRET = 'secret'
     TESTING = False

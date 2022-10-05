@@ -7,12 +7,44 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
+    permissions: write-all
+    environment: production
+    env:
+      GCLOUD_DEPLOYMENT_SERVICE_ACCOUNT: ${{ secrets.GCLOUD_DEPLOYMENT_SERVICE_ACCOUNT }}
+      GCLOUD_RUNNER_SERVICE_ACCOUNT: ${{ secrets.GCLOUD_RUNNER_SERVICE_ACCOUNT }}
+      GCLOUD_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}
+      SERVICE_NAME: authentication-service
+      SOURCE: .
+      DESCRIPTION: authentication-service
+      PORT: ${{ secrets.PORT }}
+      API_KEY: ${{ secrets.API_KEY }}
+      USER_SERVICE_URL: ${{ secrets.USER_SERVICE_URL }}
+      JWT_ALGORITHM: ${{ secrets.JWT_ALGORITHM }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     steps:
       - name: checkout
         uses: actions/checkout@v3
+      - name: update config
+        run: |
+          echo '    API_KEY = "${{ env.API_KEY }}"' >> ./authentication/config/production_config.py
+          echo '    USER_SERVICE_URL = "${{ env.USER_SERVICE_URL }}"' >> ./authentication/config/production_config.py
+          echo '    JWT_ALGORITHM = "${{ env.JWT_ALGORITHM }}"' >> ./authentication/config/production_config.py
+          echo '    JWT_SECRET = "${{ env.JWT_SECRET }}"' >> ./authentication/config/production_config.py
       - name: install requirements
         run: pip install --no-cache-dir -r requirements.txt
       - name: run tests
         run: pytest --cov-report term-missing --cov=authentication
       - name: run lint
         run: python lint.py
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          token_format: 'id_token'
+          workload_identity_provider: '${{ env.GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ env.GCLOUD_DEPLOYMENT_SERVICE_ACCOUNT }}'
+          id_token_audience: '${{ env.GCLOUD_WORKLOAD_IDENTITY_PROVIDER }}'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+      - name: 'Use gcloud CLI REST'
+        run: 'gcloud run deploy ${{ env.SERVICE_NAME }} --source ${{ env.SOURCE }} --allow-unauthenticated --description="${{ env.DESCRIPTION }}" --region=us-central1 --port=${{ env.PORT }} --service-account=${{ env.GCLOUD_RUNNER_SERVICE_ACCOUNT }}'

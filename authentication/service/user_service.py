@@ -48,12 +48,12 @@ class UserService:
 
         return None, 404
 
-    def health(self) -> tuple[dict, int]:
+    def health(self) -> Tuple[dict, int]:
         '''
             Execute the users service health check.
 
             Returns:
-                tuple[dict, int]: The health check result.
+                Tuple[dict, int]: The health check result.
         '''
         try:
             response = requests.get(f'{self.url}/health', timeout=20)

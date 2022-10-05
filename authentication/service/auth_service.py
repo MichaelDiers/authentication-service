@@ -1,6 +1,7 @@
 '''
     Service for authentication operations.
 '''
+from typing import Tuple
 from authentication.model.payload import Payload
 from authentication.model.token_response import TokenResponse
 
@@ -21,7 +22,7 @@ class AuthService:
         self.jwt_service = jwt_service
         self.user_service = user_service
 
-    def health(self) -> tuple[dict, int]:
+    def health(self) -> Tuple[dict, int]:
         '''
             A health check for the service.
 
@@ -33,7 +34,7 @@ class AuthService:
         users_result['details']['Authentication Service'] = {'status': 'up'}
         return users_result, 200
 
-    def sign_in(self, sign_in_request) -> tuple[TokenResponse, int]:
+    def sign_in(self, sign_in_request) -> Tuple[TokenResponse, int]:
         '''
             Sign in the given user.
 
@@ -54,7 +55,7 @@ class AuthService:
         token_response = self.jwt_service.encode(Payload(user.display_name))
         return token_response, 200
 
-    def sign_up(self, sign_up_request) -> tuple[TokenResponse, int]:
+    def sign_up(self, sign_up_request) -> Tuple[TokenResponse, int]:
         '''
             Sign up a new user.
 

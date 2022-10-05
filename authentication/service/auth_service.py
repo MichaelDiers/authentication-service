@@ -21,7 +21,19 @@ class AuthService:
         self.jwt_service = jwt_service
         self.user_service = user_service
 
-    def sign_in(self, sign_in_request) -> TokenResponse:
+    def health(self) -> tuple[dict, int]:
+        '''
+            A health check for the service.
+
+            Returns:
+                dict: A dictionary containing the result of the health check.
+        '''
+        users_result, _ = self.user_service.health()
+        users_result['info']['Authentication Service'] = {'status': 'up'}
+        users_result['details']['Authentication Service'] = {'status': 'up'}
+        return users_result, 200
+
+    def sign_in(self, sign_in_request) -> tuple[TokenResponse, int]:
         '''
             Sign in the given user.
 
@@ -42,7 +54,7 @@ class AuthService:
         token_response = self.jwt_service.encode(Payload(user.display_name))
         return token_response, 200
 
-    def sign_up(self, sign_up_request):
+    def sign_up(self, sign_up_request) -> tuple[TokenResponse, int]:
         '''
             Sign up a new user.
 

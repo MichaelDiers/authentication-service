@@ -9,6 +9,62 @@ from authentication.model.sign_up_request import SignUpRequest
 from tests.test_provider import auth_service
 
 
+def test_health() -> None:
+    '''
+        Test the health check.
+    '''
+    with patch('requests.get') as mock:
+        mock.return_value = Mock(
+            status_code=200,
+            json=lambda: {
+                'status': 'ok',
+                'info': {},
+                'error': {
+                    'Users Service': {
+                        'status': 'ok'
+                    }
+                },
+                'details': {
+                    'Users Service': {
+                        'status': 'ok'
+                    }
+                }
+            })
+        service = auth_service()
+        health, status = service.health()
+
+        assert status == 200
+        assert health['status'] == 'ok'
+
+
+def test_health_failure() -> None:
+    '''
+        Test the health check for failure.
+    '''
+    with patch('requests.get') as mock:
+        mock.return_value = Mock(
+            status_code=200,
+            json=lambda: {
+                'status': 'error',
+                'info': {},
+                'error': {
+                    'Users Service': {
+                        'status': 'error'
+                    }
+                },
+                'details': {
+                    'Users Service': {
+                        'status': 'error'
+                    }
+                }
+            })
+        service = auth_service()
+        health, status = service.health()
+
+        assert status == 200
+        assert health['status'] == 'error'
+
+
 def test_init() -> None:
     '''
         Test for __init__.

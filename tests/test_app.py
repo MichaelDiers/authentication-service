@@ -74,6 +74,41 @@ def client_sign_up(client, request):
     return (client, ) + request.param
 
 
+def test_health(client) -> None:
+    '''
+    Test the health route.
+
+    Args:
+        client (TestClient): A flask test client.
+    '''
+    with patch('requests.get') as mock:
+        mock.return_value = Mock(
+            status_code=200,
+            json=lambda: {
+                'status': 'ok',
+                'info': {},
+                'error': {
+                    'Users Service': {
+                        'status': 'ok'
+                    }
+                },
+                'details': {
+                    'Users Service': {
+                        'status': 'ok'
+                    }
+                }
+            }
+        )
+
+        response = client.get(
+            '/health',
+            headers={'x-api-key': TestConfig.API_KEY}
+        )
+
+        assert response.status_code == 200
+        assert response.json['status'] == 'ok'
+
+
 def test_sign_in(client_sign_in) -> None:  # pylint: disable=redefined-outer-name
     '''
         Test for signing in a user.

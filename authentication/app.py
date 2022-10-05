@@ -3,6 +3,8 @@
 '''
 from flask import Flask
 from marshmallow import exceptions
+from werkzeug.exceptions import HTTPException
+from authentication.route.health_route import health_route
 from authentication.route.sign_in_route import sign_in_route
 from authentication.route.sign_up_route import sign_up_route
 from authentication.config.production_config import ProductionConfig
@@ -40,15 +42,17 @@ def create_app(config=None) -> Flask:
         '''
         return {}, 400
 
-    @app.errorhandler(404)
-    def handle_not_found(_):
-        return {}, 404
+    @app.errorhandler(HTTPException)
+    def handle_http_exception(err):
+        return {}, err.code
 
     @app.errorhandler(Exception)
-    def handle_all_errors(_):
+    def handle_all_errors(err):
+        print(err)
         return {}, 500
 
     app.register_blueprint(sign_in_route)
     app.register_blueprint(sign_up_route)
+    app.register_blueprint(health_route)
 
     return app

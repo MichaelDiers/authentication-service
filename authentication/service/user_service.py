@@ -48,6 +48,32 @@ class UserService:
 
         return None, 404
 
+    def health(self) -> tuple[dict, int]:
+        '''
+            Execute the users service health check.
+
+            Returns:
+                tuple[dict, int]: The health check result.
+        '''
+        try:
+            response = requests.get(f'{self.url}/health', timeout=20)
+            return response.json(), response.status_code
+        except:  # pylint: disable=bare-except
+            return {
+                'status': 'error',
+                'info': {},
+                'error': {
+                    'Users Service': {
+                        'status': 'error'
+                    }
+                },
+                'details': {
+                    'Users Service': {
+                        'status': 'error'
+                    }
+                }
+            }, 200
+
     def read(self, sign_in_request) -> Tuple[User, int]:
         '''
             Read a user by email.

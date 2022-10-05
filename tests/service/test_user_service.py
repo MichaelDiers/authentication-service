@@ -59,6 +59,38 @@ def test_create(status_code_mock, status_code_service, json) -> None:
             assert status_code_service == 500
 
 
+def test_health_failure() -> None:
+    '''
+        Test the health check with failures.
+    '''
+    with patch('requests.get') as mock:
+        mock.return_value = Mock(
+            status_code=200,
+            json=lambda: 1/0
+        )
+        service = user_service()
+        result, status = service.health()
+        assert status == 200
+        assert result is not None
+        assert result['status'] == 'error'
+
+
+def test_health_success() -> None:
+    '''
+        Test the health check.
+    '''
+    with patch('requests.get') as mock:
+        mock.return_value = Mock(
+            status_code=200,
+            json=lambda: {'foo': 'bar'}
+        )
+        service = user_service()
+        result, status = service.health()
+        assert status == 200
+        assert result is not None
+        assert result['foo'] == 'bar'
+
+
 def test_init() -> None:
     '''
         Test for __init__.
